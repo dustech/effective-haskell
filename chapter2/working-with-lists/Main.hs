@@ -130,8 +130,26 @@ foldr func carryValue lst =
     then carryValue
     else func (head lst) $ foldr func carryValue (tail lst)
 
-main =
-  print $
-    show (foldl (+) 0 [1 .. 100])
-      <> "="
-      <> show (foldr (+) 0 [1 .. 100])
+-- main =
+--   print $
+--     show (foldl (+) 0 [1 .. 100])
+--       <> "="
+--       <> show (foldr (+) 0 [1 .. 100])
+
+doubleElems nums =
+  if null nums
+    then []
+    else
+      let hd = head nums
+          tl = tail nums
+       in (2 * hd) : doubleElems tl
+
+-- The map function takes a function and applies it to every element in a list
+main = print $ doubleElems [10, 9 .. 2]
+
+-- You can even use map to apply a value to a list of functions:
+-- map ($ 10) [(+ 1), (* 3), (`div` 5)]
+map'' f xs =
+  if null xs
+    then []
+    else f (head xs) : map'' f (tail xs)
