@@ -23,7 +23,19 @@ extendedGreeting person =
       goodBye = makeGreeting "See you later" person
    in hello <> "\n" <> goodDay <> "\n" <> goodBye
 
-main = putStrLn $ extendedGreeting "George"
+-- main = putStrLn $ extendedGreeting "George"
+
+-- In this example, hello references the helloStr variable that we don’t define
+-- until later in the same let binding.
+
+extendedGreeting' person =
+  let hello = makeGreeting helloStr person
+      goodDay = makeGreeting "I hope you have a nice afternoon" person
+      goodBye = makeGreeting "See you later" person
+      helloStr = "Hello"
+   in hello <> "\n" <> goodDay <> "\n" <> goodBye
+
+main = putStrLn $ extendedGreeting' "George"
 
 -- In Haskell, show, print, and putStrLn are three commonly used functions
 -- for output, but they serve slightly different purposes and behave in
