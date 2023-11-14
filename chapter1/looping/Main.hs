@@ -14,6 +14,9 @@ module Main where
 -- If the number is evenly divisible by both 3 and 5, replace it with the
 -- word “fizzbuzz”.
 
+-- When we’re writing recursive functions, we call the condition that causes the
+-- recursion to end the base case.
+
 fizzBuzzFor number
   | 0 == number `rem` 15 = "fizzbuzz"
   | 0 == number `rem` 5 = "buzz"
