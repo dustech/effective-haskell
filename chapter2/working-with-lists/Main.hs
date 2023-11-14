@@ -1,5 +1,7 @@
 module Main where
 
+import Prelude hiding (foldl, foldr)
+
 listOfNums = [1, 2, 3]
 
 listOfFloats = [1.1, 2.2, 3.3]
@@ -116,4 +118,20 @@ isBalanced' str = 0 == reduce checkBalance 0 str
       | letter == ')' = count - 1
       | otherwise = count
 
-main = print $ isBalanced' "my unbalanced string ("
+-- main = print $ isBalanced' "my unbalanced string ("
+
+foldl func carryValue lst =
+  if null lst
+    then carryValue
+    else foldl func (func carryValue (head lst)) (tail lst)
+
+foldr func carryValue lst =
+  if null lst
+    then carryValue
+    else func (head lst) $ foldr func carryValue (tail lst)
+
+main =
+  print $
+    show (foldl (+) 0 [1 .. 100])
+      <> "="
+      <> show (foldr (+) 0 [1 .. 100])
