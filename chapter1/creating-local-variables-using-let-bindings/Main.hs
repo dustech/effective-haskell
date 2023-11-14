@@ -35,7 +35,77 @@ extendedGreeting' person =
       helloStr = "Hello"
    in hello <> "\n" <> goodDay <> "\n" <> goodBye
 
-main = putStrLn $ extendedGreeting' "George"
+-- main = putStrLn $ extendedGreeting' "George"
+
+-- When you create a let binding, the expression you are binding a name to doesn’t
+-- need to be a constant, like a string or a number. You can also use let bindings
+-- to define new functions.
+
+extendedGreeting'' person =
+  let joinWithNewlines a b = a <> "\n" <> b
+      hello = makeGreeting "Hello" person
+      goodbye = makeGreeting "Goodbye" person
+   in joinWithNewlines hello goodbye
+
+-- main = putStrLn $ extendedGreeting'' "George"
+
+-- Haskell supports recursive let bindings, which means that the items inside of
+--   our let bindings can refer to one another. The order doesn’t matter
+
+extendedGreeting''' person =
+  let joinWithNewlines a b = a <> "\n" <> b
+      joined = joinWithNewlines hello goodbye
+      hello = makeGreeting "Hello" person
+      goodbye = makeGreeting "Goodbye" person
+   in joined
+
+-- main = putStrLn $ extendedGreeting''' "George"
+
+-- Let bindings can also be nested. For example, if you are defining a new function
+--    inside of a let expression, and you want to define some variables inside of
+--     that function, you can use nested let expressions.
+
+extendedGreetingNested person =
+  let joinWithNewlines a b = a <> "\n" <> b
+      helloAndGoodbye hello goodbye =
+        let hello' = makeGreeting hello person
+            goodbye' = makeGreeting goodbye person
+         in joinWithNewlines hello' goodbye'
+   in helloAndGoodbye "Hello Nested" "Goodbye"
+
+-- main = putStrLn $ extendedGreetingNested "George"
+
+-- There’s one final type of binding called a where binding. A where binding
+-- follows all the same rules as a let binding, except it comes at the end of
+--   a function instead of the beginning, and uses the where keyword instead
+--   of let .. in. Any parameters that you’ve bound to a variable name in your
+--   function will be available to your where binding, but not anything you’ve
+--   defined in a let binding. Conversely, anything you define inside of a where
+--     binding will be available to use in let bindings
+
+letWhereGreeting name place =
+  let salutation = "Hello " <> name
+      meetingInfo = location "Tuesday"
+   in salutation <> " " <> meetingInfo
+  where
+    location day = "we met at " <> place <> " on a " <> day
+
+-- main = putStrLn $ letWhereGreeting "George" "Room"
+
+-- Try rewriting your extendedGreeting function to use a
+-- where binding instead of a let binding
+
+extendedGreetingWhere person =
+  helloAndGoodbye "Hello" "Goodbye"
+  where
+    helloAndGoodbye hello goodbye =
+      joinWithNewlines hello' goodbye'
+      where
+        hello' = makeGreeting hello person
+        goodbye' = makeGreeting goodbye person
+    joinWithNewlines a b = a <> "\n" <> b
+
+main = putStrLn $ extendedGreetingWhere "Carl"
 
 -- In Haskell, show, print, and putStrLn are three commonly used functions
 -- for output, but they serve slightly different purposes and behave in
