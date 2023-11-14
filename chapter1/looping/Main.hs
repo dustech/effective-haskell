@@ -20,4 +20,14 @@ fizzBuzzFor number
   | 0 == number `rem` 3 = "fizz"
   | otherwise = show number
 
-main = putStrLn $ fizzBuzzFor 3
+-- main = putStrLn $ fizzBuzzFor 3
+
+naiveFizzBuzz fizzBuzzCount curNum fizzBuzzString =
+  if curNum > fizzBuzzCount
+    then fizzBuzzString
+    else
+      let nextFizzBuzzString = fizzBuzzString <> fizzBuzzFor curNum <> " "
+          nextNumber = curNum + 1
+       in naiveFizzBuzz fizzBuzzCount nextNumber nextFizzBuzzString
+
+main = putStrLn $ naiveFizzBuzz 3 0 ""
