@@ -32,4 +32,22 @@ guardSize num
 
 joinStringsWithLF s s' = s <> "\n" <> s'
 
-main = putStrLn $ joinStringsWithLF (guardSize 3) (guardSize 11)
+-- main = putStrLn $ joinStringsWithLF (guardSize 3) (guardSize 11)
+
+-- You can use let expressions and where clauses with guards just like with other
+-- functions. Anything that you define in a let expression will only be in scope
+-- for the particular branch where it’s defined. On the other hand, variables
+-- defined inside of a where clause will be in scope for all of the branches
+-- of your function
+
+guardSize' num
+  | num > 0 =
+      let size = "positive"
+       in exclaim size
+  | num < 3 = exclaim "small"
+  | num < 100 = exclaim "medium"
+  | otherwise = exclaim "large"
+  where
+    exclaim message = "that's a " <> message <> " number!"
+
+main = putStrLn $ joinStringsWithLF (guardSize' 3) (guardSize' 11)
