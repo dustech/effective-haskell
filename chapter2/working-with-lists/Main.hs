@@ -145,7 +145,7 @@ doubleElems nums =
        in (2 * hd) : doubleElems tl
 
 -- The map function takes a function and applies it to every element in a list
-main = print $ doubleElems [10, 9 .. 2]
+-- main = print $ doubleElems [10, 9 .. 2]
 
 -- You can even use map to apply a value to a list of functions:
 -- map ($ 10) [(+ 1), (* 3), (`div` 5)]
@@ -153,3 +153,53 @@ map'' f xs =
   if null xs
     then []
     else f (head xs) : map'' f (tail xs)
+
+-- filter
+--  checkGuestList, which will let us provide a list of people who will
+--   be attending the party
+
+-- We’ll make use of the built-in function elem that tells us
+-- if a value is an element of a list:
+
+checkGuestList guestList name =
+  name `elem` guestList
+
+-- Next, we’ll create a list of some friends and how much
+--  their favorite meal costs:
+
+foodCosts =
+  [ ("Ren", 10.00),
+    ("George", 4.00),
+    ("Porter", 27.50)
+  ]
+
+-- add a function to combine our guest list and our food cost
+-- list to find the budget we need for our party
+
+-- read right to left:
+-- isAttending is an explicit param,
+--  is a function with one param returning bool
+-- a list of tuple is the hidden param
+-- computation:
+-- get the list and pass through filter
+-- every element: get the first element of tuple
+-- filter by the (b -> bool) function isAttending passed as parameter
+-- all elements thet get though filter are passed to map snd
+-- map snd extract the second element of every element of the tuple list
+-- the new single value list is passed to foldr + with 0 seed
+-- foldr aggregate by sum the elements and return the total
+-- so the function is:
+-- pass a filter function and a list of tuple
+-- result is the sum of second elements of the tuples that pass the filter
+
+partyBudget isAttending =
+  foldr (+) 0 . map snd . filter (isAttending . fst)
+
+-- usage
+-- partyBudget need a filter: checkGuestList
+-- partyBudget need a list of tuple: foodCosts
+-- checkGuestList need a list: provided by caller eg. ["Ren","George"]
+-- checkGuestList need a name: provided by foodCosts popped by partyBudget
+
+-- return the total budget: 14.0
+main = print $ partyBudget (checkGuestList ["Ren", "George"]) foodCosts
