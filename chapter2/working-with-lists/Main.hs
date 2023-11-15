@@ -208,4 +208,62 @@ main = print $ partyBudget (checkGuestList ["Ren", "George"]) foodCosts
 --  of map and filter using List Comprehensions.
 double = [2 * number | number <- [0 .. 10]]
 
-doubleOddsMultipleOf3 = [2 * number | number <- [0 .. 10], odd number, number `rem` 3 == 0]
+doubleOddsMultipleOf3 =
+  [2 * number | number <- [0 .. 10], odd number, number `rem` 3 == 0]
+
+-- illustrative example by building a function that will take two lists
+-- of numbers and will return a list of pairs of elements in the first
+-- list that are also in the second list, paired with odd elements of the
+--  second list.illustrative example by building a function that will take
+--  two lists of numbers and will return a list of pairs of elements in the
+--  first list that are also in the second list, paired with odd elements
+--  of the second list.
+
+-- usage pairs [1..10] [2..5]
+pairs as bs =
+  let as' = filter (`elem` bs) as
+      bs' = filter odd bs
+      mkPairs a = map (\b -> (a, b)) bs'
+   in concat $ map mkPairs as'
+
+-- list comprehension version
+
+pairs' as bs =
+  [(a, b) | a <- as, a `elem` bs, b <- bs, odd b]
+
+-- let’s go back to our dinner party budgeting function and imagine we wanted to
+-- expand it to account for the fact that most guests may want to eat more than
+-- one dish. Instead of including a price for the guest’s favorite meal, we’ll
+-- instead get a list of a guest and the food they’ve requested. We’ll also take
+--  two new functions. First, willEat will take a guest’s name and a food,
+--  and will return true if the guest might want to eat that food. Second,
+--   foodCost will take a food and return its price.
+
+-- Using a list comprehension we can tersely
+-- express our new party budget calculator
+
+partyBudget' isAttending willEat foodCost guests =
+  foldl (+) 0 $
+    [ foodCost food
+      | guest <- map fst guests,
+        food <- map snd guests,
+        willEat guest food,
+        isAttending guest
+    ]
+
+-- zip
+
+--  Think about how you might write a function named
+--  combineLists that takes two lists and returns a list
+--  of tuples, like in this example:
+--  	λ combineLists [1..5] ["I","II","III","IV","V","VI","VII"]
+--  	[(1,"I"),(2,"II"),(3,"III"),(4,"IV"),(5,"V")]
+
+pairwiseSum xs ys =
+  let sumElems pairs =
+        let a = fst pairs
+            b = snd pairs
+         in a + b
+   in map sumElems $ zip xs ys
+
+pairwiseSum' xs ys = map (uncurry (+)) $ zip xs ys
