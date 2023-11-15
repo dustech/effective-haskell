@@ -203,3 +203,9 @@ partyBudget isAttending =
 
 -- return the total budget: 14.0
 main = print $ partyBudget (checkGuestList ["Ren", "George"]) foodCosts
+
+-- It’s also possible to represent combinations
+--  of map and filter using List Comprehensions.
+double = [2 * number | number <- [0 .. 10]]
+
+doubleOddsMultipleOf3 = [2 * number | number <- [0 .. 10], odd number, number `rem` 3 == 0]
