@@ -21,4 +21,4 @@ if ! is_dir_empty "./obj"; then
 fi
 
 # compile haskell
-ghc Main.hs -outputdir ./obj -o ./bin/Main
+ghc -Wincomplete-patterns Main.hs -outputdir ./obj -o ./bin/Main

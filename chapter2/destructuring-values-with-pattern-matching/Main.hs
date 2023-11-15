@@ -8,7 +8,7 @@ import Prelude hiding (fst, snd)
 customGreeting "George" = "Oh, hey George!"
 customGreeting name = "Hello, " <> name
 
-main = print $ customGreeting "George"
+-- main = print $ customGreeting "George"
 
 matchNumber 0 = "zero"
 matchNumber n = show n
@@ -76,3 +76,52 @@ thrd (_, _, x) = x
 printHead [] = "empty!"
 printHead lst@(hd : _tail) =
   "the head of " <> (show lst) <> " is " <> show hd
+
+--  A case statement allows you to pattern match on a value inside
+--  of your function.
+
+favoriteFood person =
+  case person of
+    "Ren" -> "Tofu"
+    "Rebecca" -> "Falafel"
+    "George" -> "Banana"
+    name -> "I Don't Know what " <> name <> " likes!"
+
+handleNums l =
+  case l of
+    [] -> "An empty list"
+    [y]
+      | y == 0 -> "a list called: [0]"
+      | y == 1 -> "a singular list of [1]"
+      | even y -> "a singleton list containing an even number"
+      | otherwise -> "the list contains " <> (show y)
+    _list -> "the list has more than 1 element"
+
+-- Mixing case statements with guards can sometimes allow you to write
+-- terse code when you are dealing with complex business logic, but be
+-- careful to not use so many clauses in one place that it makes your
+-- code less readable.
+
+partialFunction 0 = "I only work for 0"
+partialFunction impossibleValue =
+  error $
+    "I only work with 0 but I was called with " <> show impossibleValue
+
+-- One way that we can get warnings about non-exhaustive
+-- patterns is to ask for them explicitly by passing
+-- in the -Wincomplete-patterns option to ghc before
+-- the name of the file we’re compiling:
+partialFunction' 0 = "I only work for 0"
+
+-- we can temporarily disable the warning by passing in -Wno-incomplete-patterns
+main = putStrLn $ partialFunction 3
+
+-- GHC supports quite a lot of different warnings that can be individually enabled
+-- and disabled. The pattern we just used holds for all of them. You can enable a
+-- warning with -Wwarning-name and disable it with -Wno-warning-name. If you want
+-- to enable all warnings about things that might be problems with your program,
+-- you can also use -Wall. GHC supports quite a lot of different warnings that can
+-- be individually enabled and disabled. The pattern we just used holds for all of
+--   them. You can enable a warning with -Wwarning-name and disable it
+--   with -Wno-warning-name. If you want to enable all warnings about things
+--   that might be problems with your program, you can also use -Wall.
