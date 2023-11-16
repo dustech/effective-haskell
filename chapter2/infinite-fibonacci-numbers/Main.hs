@@ -11,3 +11,12 @@ smallFibs =
   takeWhile (< 100) fibs
 
 main = print smallFibs
+
+fibs' firstFib secondFib =
+  let nextFib = firstFib + secondFib
+   in firstFib : fibs' secondFib nextFib
+
+fibs'' = 0 : 1 : helper fibs'' (tail fibs'')
+  where
+    helper (a : as) (b : bs) =
+      a + b : helper as bs
