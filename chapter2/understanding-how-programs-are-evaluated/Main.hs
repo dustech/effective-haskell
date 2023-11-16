@@ -52,3 +52,16 @@ findFirst predicate =
     findHelper listElement maybeFound
       | predicate listElement = [listElement]
       | otherwise = maybeFound
+
+-- i did it, maybeFound is a list [a],
+-- but it's also a function (a -> Bool) -> [a] -> [a] -> [a]
+-- because referencial transparency
+
+findFirst' predicate carryValue lst =
+  if null lst
+    then carryValue
+    else findHelper (head lst) $ findFirst' predicate carryValue (tail lst)
+  where
+    findHelper listElement maybeFound
+      | predicate listElement = [listElement]
+      | otherwise = maybeFound
