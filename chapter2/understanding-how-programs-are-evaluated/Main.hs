@@ -16,7 +16,12 @@ numbersStartingAt n =
 
 main = print $ take 5 $ numbersStartingAt 0
 
--- Instead of calculating the boundaries of an array, you can use the cycle function from Prelude to create an infinitely repeating list. Let’s look at an example of this by writing a function to convert radians to degrees. Our function will always return a number of degrees between 0 and 359 (we’ll only consider integer numbers of degrees), and instead of using modulo, we’ll index into a repeating list
+-- Instead of calculating the boundaries of an array, you can use the cycle
+-- function from Prelude to create an infinitely repeating list. Let’s look at an
+-- example of this by writing a function to convert radians to degrees.
+-- Our function will always return a number of degrees between 0 and 359
+-- (we’ll only consider integer numbers of degrees), and instead of using modulo,
+--  we’ll index into a repeating list
 
 -- radsToDegrees :: Float -> Int
 radsToDegrees radians =
@@ -24,7 +29,9 @@ radsToDegrees radians =
       converted = truncate $ (radians * 360) / (2 * pi)
    in degrees !! converted
 
--- For practice, let’s write our own version of cycle. Our version will be really cool, and we don’t want it to conflict with the existing function already named cycle, so let’s call ours epicCycle:
+-- For practice, let’s write our own version of cycle. Our version will be really
+-- cool, and we don’t want it to conflict with the existing function already named
+-- cycle, so let’s call ours epicCycle:
 
 epicCycle inputList =
   cycleHelper inputList
@@ -34,3 +41,14 @@ epicCycle inputList =
 
 moreEpicCycle inputList =
   inputList <> moreEpicCycle inputList
+
+-- In this example, we’ll write a function that will find the first element of a
+-- list that satisfies our predicate function and return it,
+-- even if the list is infinite.
+
+findFirst predicate =
+  foldr findHelper []
+  where
+    findHelper listElement maybeFound
+      | predicate listElement = [listElement]
+      | otherwise = maybeFound
