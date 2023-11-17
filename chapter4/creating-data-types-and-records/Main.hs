@@ -70,4 +70,18 @@ applyDiscount customer =
       CustomerInfo "Porter" "Pupper" count (balance `div` 2)
     otherCustomer -> otherCustomer
 
+-- This approach to pattern matching out fields works well for small data types
+--  where you will generally want access to all or most fields, but as you can
+--   imagine it can become cumbersome for larger types or cases where you
+--   frequently only want to access a single field. You can work around this
+--   by writing a function to access each field of your value
+
+firstName (CustomerInfo name _ _ _) = name
+
+lastName (CustomerInfo _ name _ _) = name
+
+widgetCount (CustomerInfo _ _ count _) = count
+
+balance (CustomerInfo _ _ _ balance) = balance
+
 main = print $ showCustomer $ applyDiscount customerGeorge
