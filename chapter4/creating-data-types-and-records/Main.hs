@@ -55,6 +55,19 @@ customerGeorge =
 showCustomer (CustomerInfo first last count balance) =
   let fullName = first <> " " <> last
       name = "name: " <> fullName
-   in name
+      count' = "count: " <> show count
+      balance' = "balance: " <> show balance
+   in name <> " " <> count' <> " " <> balance'
 
-main = print $ showCustomer customerGeorge
+-- You can also match values in specific fields. For example, let’s write a
+-- function that applies a discount to certain customers based on their
+-- first and last name
+applyDiscount customer =
+  case customer of
+    (CustomerInfo "George" "Bird" count balance) ->
+      CustomerInfo "George" "Bird" count (balance `div` 4)
+    (CustomerInfo "Porter" "Pupper" count balance) ->
+      CustomerInfo "Porter" "Pupper" count (balance `div` 2)
+    otherCustomer -> otherCustomer
+
+main = print $ showCustomer $ applyDiscount customerGeorge
