@@ -76,12 +76,66 @@ applyDiscount customer =
 --   frequently only want to access a single field. You can work around this
 --   by writing a function to access each field of your value
 
-firstName (CustomerInfo name _ _ _) = name
+-- firstName (CustomerInfo name _ _ _) = name
 
-lastName (CustomerInfo _ name _ _) = name
+-- lastName (CustomerInfo _ name _ _) = name
 
-widgetCount (CustomerInfo _ _ count _) = count
+-- widgetCount (CustomerInfo _ _ count _) = count
 
-balance (CustomerInfo _ _ _ balance) = balance
+-- balance (CustomerInfo _ _ _ balance) = balance
+
+updateFirstName (CustomerInfo _ lastName count balance) firstName =
+  CustomerInfo firstName lastName count balance
 
 main = print $ showCustomer $ applyDiscount customerGeorge
+
+data CustomerInfoRecord = CustomerInfoRecord
+  { firstName :: String,
+    lastName :: String,
+    widgetCount :: Int,
+    balance :: Int
+  }
+
+customerGeorgeRecord =
+  CustomerInfoRecord
+    { balance = 100,
+      lastName = "Bird",
+      firstName = "George",
+      widgetCount = 10
+    }
+
+-- A disadvantage to constructing records this way is you can’t
+-- partially apply fields to the data constructor using record syntax.
+--  For example, if we wanted to create some function to initialize
+--   new customers with some bonus items using record syntax,
+--   we would need to manually accept the missing fields as parameters
+
+customerFactory fname lname =
+  CustomerInfoRecord
+    { balance = 0,
+      widgetCount = 5,
+      firstName = fname,
+      lastName = lname
+    }
+
+showCustomerRecord c =
+  let fullName = firstName c <> " " <> lastName c
+      name = "name: " <> fullName
+      count' = "count: " <> show (widgetCount c)
+      balance' = "balance: " <> show (balance c)
+   in name <> " " <> count' <> " " <> balance'
+
+-- In record syntax you create a product type, but each field of the datatype
+--  is assigned a name as well as a type. The names are used to automatically
+--   generate functions to get fields from the record. These functions
+--   are called field selectors, or often just selectors.
+--   There is also special syntax to generate a record with new fields.
+--   Let’s rewrite our CustomerInfo type using record syntax:
+
+-- Updating records can also be done easily using record update syntax.
+
+emptyCart customer =
+  customer
+    { widgetCount = 0,
+      balance = 0
+    }
