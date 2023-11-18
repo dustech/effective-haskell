@@ -45,10 +45,25 @@ eqPeano p p' =
 -- addPeano :: Peano -> Peano -> Peano
 
 -- if first member is Z return second
-appPeano Z b = b
-
+addPeano Z b = b
 -- addPeano a b = toPeano $ fromPeano a + fromPeano b
 
 -- if first member is not Z
 -- pop a successor from a and push a successor on b
 addPeano (S a) b = addPeano a (S b)
+
+-- Inductively Defined Lists
+
+data List a = Empty | Cons a (List a)
+
+toList :: [a] -> List a
+toList [] = Empty
+toList (x : xs) = Cons x (toList xs)
+
+fromList :: List a -> [a]
+fromList Empty = []
+fromList (Cons x xs) = x : fromList xs
+
+addToList :: List a -> a -> List a
+addToList Empty a = Cons a Empty
+addToList ls a = Cons a ls
