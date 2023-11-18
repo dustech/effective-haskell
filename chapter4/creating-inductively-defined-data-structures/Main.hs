@@ -31,3 +31,24 @@ fromPeano Z = 0
 fromPeano (S p) = succ (fromPeano p)
 
 showPeano p = "Peano " <> show (fromPeano p)
+
+-- To test for equality, we’ll create another recursive function that
+-- will traverse our data structure, but in this case we’re taking
+--  two parameters, and we’ll want to traverse them at the same time.
+
+eqPeano p p' =
+  case (p, p') of
+    (Z, Z) -> True
+    (S n, S n') -> eqPeano n n'
+    _ -> False
+
+-- addPeano :: Peano -> Peano -> Peano
+
+-- if first member is Z return second
+appPeano Z b = b
+
+-- addPeano a b = toPeano $ fromPeano a + fromPeano b
+
+-- if first member is not Z
+-- pop a successor from a and push a successor on b
+addPeano (S a) b = addPeano a (S b)
