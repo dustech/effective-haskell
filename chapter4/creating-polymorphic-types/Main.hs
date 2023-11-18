@@ -73,3 +73,31 @@ totalEmployeesSalary =
 myPeople = [customerGeorge, employeePorter, employeeJane]
 
 main = print $ totalEmployeesSalary myPeople
+
+-- Although useful, sometimes we want a slightly richer choice between two types,
+-- especially when we might want to represent success or detailed failure, or a
+-- choice between two paths. In this case, you can use another common type defined
+-- in Prelude, the Either type. Either takes two type parameters, representing the
+-- types of a left and right value. By convention in Haskell applications, Left
+-- typically represents an error case, and Right represents a success case.
+
+-- data Either a b = Left a | Right b
+
+eitherToMaybe e =
+  case e of
+    Left _ -> Nothing
+    Right val -> Just val
+
+handleMissingRight e =
+  case e of
+    Left err -> Left err
+    Right (Just val) -> Right val
+    Right Nothing -> Left "Missing value"
+
+myError = Left "Error!"
+
+myRightJust = Right $ Just "Right!"
+
+myRightNothing = Right Nothing
+
+-- resMyError = show $ handleMissingRight myError
