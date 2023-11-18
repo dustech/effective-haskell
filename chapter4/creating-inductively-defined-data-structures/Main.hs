@@ -67,3 +67,13 @@ fromList (Cons x xs) = x : fromList xs
 addToList :: List a -> a -> List a
 addToList Empty a = Cons a Empty
 addToList ls a = Cons a ls
+
+toList' :: [a] -> List a
+toList' = foldr Cons Empty
+
+fromList' :: List a -> [a]
+fromList' = listFoldr (:) []
+
+listFoldr :: (a -> b -> b) -> b -> List a -> b
+listFoldr _ acc Empty = acc
+listFoldr f acc (Cons x xs) = f x $ listFoldr f acc xs
