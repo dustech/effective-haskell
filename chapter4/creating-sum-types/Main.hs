@@ -78,4 +78,13 @@ contactForUser username =
 
 confirmContactInfo = confirmContact . contactForUser
 
+--  using sum types to store a list of strings and numbers
+data StringOrNumber = S String | N Int
+
+stringsAndNumbers =
+  [ S "This list has",
+    N 2,
+    S "different types of values"
+  ]
+
 main = print ""
