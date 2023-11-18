@@ -77,3 +77,20 @@ fromList' = listFoldr (:) []
 listFoldr :: (a -> b -> b) -> b -> List a -> b
 listFoldr _ acc Empty = acc
 listFoldr f acc (Cons x xs) = f x $ listFoldr f acc xs
+
+-- exercise
+
+-- For the sake of completeness, try implementing the following
+-- functions based on their type signatures and the behavior of
+--   the list functions in Prelude
+
+listFoldl :: (b -> a -> b) -> b -> List a -> b
+listFoldl _ acc Empty = acc
+listFoldl f acc (Cons x xs) =
+  let acc' = f acc x
+   in listFoldl f acc' xs
+
+-- listHead :: List a -> Maybe a
+-- listTail :: List a -> List a
+-- listReverse :: List a -> List a
+-- listMap :: (a -> b) -> List a -> List b
