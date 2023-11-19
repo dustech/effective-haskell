@@ -1,5 +1,8 @@
 module Main where
 
+import Data.Maybe (fromMaybe)
+import Distribution.Simple.Utils (xargs)
+
 main = print ""
 
 -- Most data structures that you’ll build in Haskell are recursive,
@@ -53,7 +56,9 @@ addPeano Z b = b
 addPeano (S a) b = addPeano a (S b)
 
 -- Inductively Defined Lists
-
+-- cons prende un valore e lo aggiunge ad una lista
+-- es Cons 1 Empty => List 1
+-- es Cons 1 (ls) => List 1 : ls
 data List a = Empty | Cons a (List a)
 
 toList :: [a] -> List a
@@ -63,10 +68,6 @@ toList (x : xs) = Cons x (toList xs)
 fromList :: List a -> [a]
 fromList Empty = []
 fromList (Cons x xs) = x : fromList xs
-
-addToList :: List a -> a -> List a
-addToList Empty a = Cons a Empty
-addToList ls a = Cons a ls
 
 toList' :: [a] -> List a
 toList' = foldr Cons Empty
@@ -90,7 +91,36 @@ listFoldl f acc (Cons x xs) =
   let acc' = f acc x
    in listFoldl f acc' xs
 
--- listHead :: List a -> Maybe a
--- listTail :: List a -> List a
--- listReverse :: List a -> List a
+listHead :: List a -> Maybe a
+listHead Empty = Nothing
+listHead (Cons x xs) = Just x
+
+listTail :: List a -> List a
+listTail Empty = Empty
+listTail (Cons x xs) = xs
+
+listReverse :: List a -> List a
+listReverse ls = reverseHelper ls Empty
+  where
+    reverseHelper Empty acc = acc
+    reverseHelper (Cons x xs) acc = reverseHelper xs (Cons x acc)
+
+-- [3:2:1]
+myList = Cons 1 $ Cons 2 $ Cons 3 Empty
+
+-- take a func a -> b
+-- take a List a
+-- return a List b
 -- listMap :: (a -> b) -> List a -> List b
+-- listMap f ls = mapHelper ls Empty
+--   where
+--     mapHelper Empty acc = acc
+--     mapHelper (Cons x xs) acc = Cons (f x)
+
+fxMap :: (a -> b) -> List a -> List b
+fxMap _ Empty = Empty
+fxMap f (Cons x xs) = Cons (f x) $ fxMap f xs
+
+l1 = Cons 1 Empty
+
+myFxedLs = fxMap show l1
