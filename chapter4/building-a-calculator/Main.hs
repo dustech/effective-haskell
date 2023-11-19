@@ -1,5 +1,7 @@
 module Main where
 
+import Text.Read (readEither)
+
 main = print ""
 
 --  	λ run "+ 3 5"
@@ -53,9 +55,49 @@ eval expr =
 -- Let’s create a parser that will allow us to write nice expressions, like
 -- we did in the example we used to start this section.
 
--- parse :: String -> Either String Expr
--- parse str =
---   case parse' (words str) of
---     Left err -> Left err
---     Right (e, []) -> Right e
---     Right (_, rest) -> Left $ "Found extra tokens: " <> (unwords rest)
+parse :: String -> Either String Expr
+parse str =
+  case parse' (words str) of
+    Left err -> Left err
+    Right (e, []) -> Right e
+    Right (_, rest) -> Left $ "Found extra tokens: " <> (unwords rest)
+
+--  The words function takes an input string and splits it up along
+--   blank space boundaries, returning a list of strings.
+--   The unwords function, intuitively, does the opposite, taking a list
+--   of strings and joining them all with spaces.
+
+parse' [] = Left "unexpected end of expression"
+parse' (token : rest) =
+  case token of
+    "+" -> parseBinary Add rest
+    "*" -> parseBinary Mul rest
+    "-" -> parseBinary Sub rest
+    "/" -> parseBinary Div rest
+    lit ->
+      case readEither lit of
+        Left err -> Left $ err
+        Right lit' -> Right (Lit lit', rest)
+
+-- You might wonder why we’re returning a tuple of an expression and
+-- a list of strings here. This is a common pattern when implementing
+-- recursive parsers. The idea is that each recursive call will
+-- consume some part of the input, and will return the remainder
+-- of the input, allowing the caller to make forward progress
+-- through the list of tokens.
+
+parseBinary exprConstructor args =
+  case parse' args of
+    Left err -> Left err
+    Right (firstArg, rest') ->
+      case parse' rest' of
+        Left err -> Left err
+        Right (secondArg, rest'') ->
+          Right $ (exprConstructor firstArg secondArg, rest'')
+
+run expr =
+  case parse expr of
+    Left err -> "Error: " <> err
+    Right expr' ->
+      let answer = show $ eval expr'
+       in "The answer is: " <> answer
