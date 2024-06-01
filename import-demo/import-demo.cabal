@@ -1,0 +1,14 @@
+cabal-version: 3.0
+name: import-demo
+version: 0.1.0.0
+license: BSD-3-Clause
+
+common warnings
+    ghc-options: -Wall
+
+executable import-demo
+    import: warnings
+    main-is: Main.hs
+    build-depends: base, text
+    hs-source-dirs: app
+    default-language: Haskell2010
