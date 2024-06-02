@@ -1,16 +1,17 @@
 module Main where
 
-import qualified Data.Char as Char (isPrint)
-import Data.Text as T ( filter, length, pack, Text)
-import Data.Text.Encoding as T ( encodeUtf8, decodeUtf8 )
+import Data.Char (isPrint)
+import Data.Text hiding (length, filter)
+import qualified Data.Text as T (length, filter)
+import Data.Text.Encoding (decodeUtf8, encodeUtf8)
 
 countNonPrintableCharacters :: [Char] -> Int
 countNonPrintableCharacters =
-    Prelude.length . Prelude.filter (not . Char.isPrint)
+    Prelude.length . Prelude.filter (not . isPrint)
 
 countNonPrintableCharactersInText :: Text -> Int
 countNonPrintableCharactersInText =
-    T.length . T.filter (not . Char.isPrint) . T.decodeUtf8 . T.encodeUtf8
+    T.length . T.filter (not . isPrint) . decodeUtf8 . encodeUtf8
 
 
 countNonPrintableCharactersStringAndText :: [Char] -> (Int, Int)
