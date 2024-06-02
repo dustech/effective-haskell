@@ -1,8 +1,8 @@
 module Main where
 
-import qualified Data.Char as Char
+import qualified Data.Char as Char (isPrint)
 import Data.Text as T
-import Data.Text.Encoding as T
+import Data.Text.Encoding as T ( encodeUtf8, decodeUtf8 )
 
 countNonPrintableCharacters :: [Char] -> Int
 countNonPrintableCharacters =
