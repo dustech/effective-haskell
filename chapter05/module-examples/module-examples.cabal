@@ -59,6 +59,7 @@ library
 
     -- Modules exported by the library.
     exposed-modules:  MyLib
+                    , HaskellBook.Examples.Introduction.CreatingModules
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -74,3 +75,4 @@ library
 
     -- Base language which the package is written in.
     default-language: Haskell2010
+    default-extensions: RecordWildCards
