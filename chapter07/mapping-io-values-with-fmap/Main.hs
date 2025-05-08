@@ -1,6 +1,6 @@
 module Main where
-import           GHC.Internal.System.Environment (getArgs)
-import           Text.Read                       (readMaybe)
+import           System.Environment (getArgs)
+import           Text.Read          (readMaybe)
 
 
 sumArgs :: [String] -> Maybe Int
